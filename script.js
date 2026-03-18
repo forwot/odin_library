@@ -1,4 +1,5 @@
 const myLibrary = [];
+const libContainer = document.querySelector('.lib-container');
 
 function Book(title, author, stat) {
     this.id = crypto.randomUUID();
@@ -14,8 +15,24 @@ function addBookToLibrary(title, author, stat) {
 }
 
 function displayMyLibrary(){
+    libContainer.replaceChildren();
+
     for(let book of myLibrary){
-        console.log(`ID: ${book.id}, Title: ${book.title}, Author: ${book.author}, Status: ${book.stat}`)
+        const newRow = document.createElement('tr');
+        const bookTitle = document.createElement('td');
+        const bookAuthor = document.createElement('td');
+        const bookStat = document.createElement('td');
+
+        bookTitle.textContent = book.title;
+        bookAuthor.textContent = book.author;
+        bookStat.textContent = book.stat
+
+        newRow.appendChild(bookTitle);
+        newRow.appendChild(bookAuthor);
+        newRow.appendChild(bookStat);
+
+        libContainer.appendChild(newRow);
+
     }
 }
 
@@ -29,7 +46,16 @@ addButton.addEventListener("click", () => {
     let author = inputAuthor.value;
     let stat = inputStat.value;
 
-    addBookToLibrary(title, author, stat);
-    displayMyLibrary();
+    if( title !== "" && author !== ""){
+        addBookToLibrary(title, author, stat);
+        displayMyLibrary();
+
+        inputAuthor.value = "";
+        inputTitle.value = "";
+    }
+    else{
+        alert("Please fill in all fields.")
+    }
 })
+
 
