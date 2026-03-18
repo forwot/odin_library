@@ -23,13 +23,27 @@ function displayMyLibrary(){
         const bookAuthor = document.createElement('td');
         const bookStat = document.createElement('td');
 
+        const dltCell = document.createElement('td');
+        const dltButton = document.createElement('button');
+
         bookTitle.textContent = book.title;
         bookAuthor.textContent = book.author;
-        bookStat.textContent = book.stat
+        bookStat.textContent = book.stat;
+
+        dltButton.textContent = "DELETE";
+        dltButton.dataset.id = book.id;
+
+        dltButton.addEventListener("click", () => {
+            const bookId = dltButton.dataset.id;
+            removeBook(bookId);
+        })
+
+        dltCell.appendChild(dltButton);
 
         newRow.appendChild(bookTitle);
         newRow.appendChild(bookAuthor);
         newRow.appendChild(bookStat);
+        newRow.appendChild(dltCell);
 
         libContainer.appendChild(newRow);
 
@@ -59,3 +73,13 @@ addButton.addEventListener("click", () => {
 })
 
 
+
+function removeBook(id) {
+    const index = myLibrary.findIndex(book => book.id === id);
+
+    if (index > -1) {
+        myLibrary.splice(index, 1);
+    }
+
+    displayMyLibrary();
+}
