@@ -2,6 +2,9 @@ const myLibrary = [];
 const libContainer = document.querySelector('.lib-container');
 
 function Book(title, author, stat) {
+    if(!new.target){
+        throw new Error("Constructor Book requires 'new'.")
+    }
     this.id = crypto.randomUUID();
     this.title = title;
     this.author = author;
