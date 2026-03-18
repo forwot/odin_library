@@ -73,7 +73,7 @@ addButton.addEventListener("click", () => {
     let author = inputAuthor.value;
     let stat = inputStat.value;
 
-    if( title !== "" && author !== ""){
+    if( title.trim() !== "" && author.trim() !== ""){
         addBookToLibrary(title, author, stat);
         displayMyLibrary();
 
