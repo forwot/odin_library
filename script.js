@@ -8,6 +8,10 @@ function Book(title, author, stat) {
     this.stat = stat;
 }
 
+Book.prototype.toggleRead = function(status){
+    this.stat = status;
+}
+
 function addBookToLibrary(title, author, stat) {
   // take params, create a book then store it in the array
   let book = new Book(title, author, stat);
@@ -21,17 +25,31 @@ function displayMyLibrary(){
         const newRow = document.createElement('tr');
         const bookTitle = document.createElement('td');
         const bookAuthor = document.createElement('td');
-        const bookStat = document.createElement('td');
 
+        const statusCell = document.createElement('td')
+        const statusButton = document.createElement('button');
         const dltCell = document.createElement('td');
         const dltButton = document.createElement('button');
 
+        // statusButton.classList.add('status-button');     both not in use atm
+        // dltButton.classList.add('delete-button');        
+
         bookTitle.textContent = book.title;
         bookAuthor.textContent = book.author;
-        bookStat.textContent = book.stat;
 
+        statusButton.textContent = book.stat;
         dltButton.textContent = "DELETE";
         dltButton.dataset.id = book.id;
+
+        statusButton.addEventListener("click", () => {
+            if(book.stat === "Read"){
+                book.toggleRead("Not read")
+            }
+            else{
+                book.toggleRead("Read");
+            }
+            statusButton.textContent = book.stat;
+        })
 
         dltButton.addEventListener("click", () => {
             const bookId = dltButton.dataset.id;
@@ -39,14 +57,14 @@ function displayMyLibrary(){
         })
 
         dltCell.appendChild(dltButton);
+        statusCell.appendChild(statusButton);
 
         newRow.appendChild(bookTitle);
         newRow.appendChild(bookAuthor);
-        newRow.appendChild(bookStat);
+        newRow.appendChild(statusCell);
         newRow.appendChild(dltCell);
-
+        
         libContainer.appendChild(newRow);
-
     }
 }
 
