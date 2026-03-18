@@ -8,8 +8,8 @@ function Book(title, author, stat) {
     this.stat = stat;
 }
 
-Book.prototype.toggleRead = function(status){
-    this.stat = status;
+Book.prototype.toggleRead = function(){
+    this.stat = this.stat === "Read" ? "Not read" : "Read";
 }
 
 function addBookToLibrary(title, author, stat) {
@@ -42,12 +42,7 @@ function displayMyLibrary(){
         dltButton.dataset.id = book.id;
 
         statusButton.addEventListener("click", () => {
-            if(book.stat === "Read"){
-                book.toggleRead("Not read")
-            }
-            else{
-                book.toggleRead("Read");
-            }
+            book.toggleRead();
             statusButton.textContent = book.stat;
         })
 
@@ -68,10 +63,10 @@ function displayMyLibrary(){
     }
 }
 
-let inputTitle = document.querySelector('#title');
-let inputAuthor = document.querySelector('#author');
-let inputStat = document.querySelector('#stat');
-let addButton = document.querySelector('.add-button');
+const inputTitle = document.querySelector('#title');
+const inputAuthor = document.querySelector('#author');
+const inputStat = document.querySelector('#stat');
+const addButton = document.querySelector('.add-button');
 
 addButton.addEventListener("click", () => {
     let title = inputTitle.value;
