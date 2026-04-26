@@ -1,7 +1,3 @@
-const myLibrary = [];
-const libContainer = document.querySelector('.lib-container');
-
-// New Book class
 class Book {
     constructor(title, author, stat) {
         this.id = crypto.randomUUID();
@@ -15,52 +11,81 @@ class Book {
     }
 }
 
-function addBookToLibrary(title, author, stat) {
-  // take params, create a book then store it in the array
-  let book = new Book(title, author, stat);
-  myLibrary.push(book);
-}
+class Library {
+    #books = [];
 
-function displayMyLibrary(){
-    libContainer.replaceChildren();
+    addBook(book){
+        this.#books.push(book);
+    }
 
-    for(let book of myLibrary){
-        const newRow = document.createElement('tr');
-        const bookTitle = document.createElement('td');
-        const bookAuthor = document.createElement('td');
+    removeBook(id){
+        const index = this.#books.findIndex(book => book.id === id);
+        if (index > -1) {
+            this.#books.splice(index, 1);
+        }
+    }
 
-        const statusCell = document.createElement('td')
-        const statusButton = document.createElement('button');
-        const dltCell = document.createElement('td');
-        const dltButton = document.createElement('button');       
-
-        bookTitle.textContent = book.title;
-        bookAuthor.textContent = book.author;
-
-        statusButton.textContent = book.stat;
-        dltButton.textContent = "DELETE";
-
-        statusButton.addEventListener("click", () => {
-            book.changeStatus();
-            statusButton.textContent = book.stat;
-        })
-
-        dltButton.addEventListener("click", () => {
-            removeBook(book.id);
-        })
-
-        dltCell.appendChild(dltButton);
-        statusCell.appendChild(statusButton);
-
-        newRow.appendChild(bookTitle);
-        newRow.appendChild(bookAuthor);
-        newRow.appendChild(statusCell);
-        newRow.appendChild(dltCell);
-        
-        libContainer.appendChild(newRow);
+    get allbooks() {
+        return this.#books;
     }
 }
 
+class LibraryUI{
+    #libContainer;
+    constructor(libContainer_selector){
+        this.#libContainer = libContainer_selector;
+    }
+    
+    displayBooks(lib){
+        this.#libContainer.replaceChildren();
+        
+        for(let book of lib.allbooks){
+            const newRow = document.createElement('tr');
+            const bookTitle = document.createElement('td');
+            const bookAuthor = document.createElement('td');
+    
+            const statusCell = document.createElement('td')
+            const statusButton = document.createElement('button');
+            const dltCell = document.createElement('td');
+            const dltButton = document.createElement('button');       
+    
+            bookTitle.textContent = book.title;
+            bookAuthor.textContent = book.author;
+    
+            statusButton.textContent = book.stat;
+            dltButton.textContent = "DELETE";
+    
+            statusButton.addEventListener("click", () => {
+                book.changeStatus();
+                statusButton.textContent = book.stat;
+            })
+    
+            dltButton.addEventListener("click", () => {
+                lib.removeBook(book.id);
+                this.displayBooks(lib);
+            })
+    
+            dltCell.appendChild(dltButton);
+            statusCell.appendChild(statusButton);
+    
+            newRow.appendChild(bookTitle);
+            newRow.appendChild(bookAuthor);
+            newRow.appendChild(statusCell);
+            newRow.appendChild(dltCell);
+            
+            this.#libContainer.appendChild(newRow);
+        }
+    }
+
+    addButton(){
+
+    }
+}
+
+const myLibrary = new Library();
+const myUI = new LibraryUI();
+
+// ADD button 
 const inputTitle = document.querySelector('#title');
 const inputAuthor = document.querySelector('#author');
 const inputStat = document.querySelector('#stat');
@@ -69,8 +94,9 @@ const addButton = document.querySelector('.add-button');
 addButton.addEventListener("click", () => {
 
     if( inputTitle.value.trim() !== "" && inputAuthor.value.trim() !== ""){
-        addBookToLibrary(inputTitle.value, inputAuthor.value, inputStat.value);
-        displayMyLibrary();
+        const book = new Book(inputTitle.value, inputAuthor.value, inputStat.value)
+        myLibrary.addBook(book);
+        myUI.displayBooks(myLibrary);
 
         inputAuthor.value = "";
         inputTitle.value = "";
@@ -79,13 +105,3 @@ addButton.addEventListener("click", () => {
         alert("Please fill in all fields.")
     }
 })
-
-function removeBook(id) {
-    const index = myLibrary.findIndex(book => book.id === id);
-
-    if (index > -1) {
-        myLibrary.splice(index, 1);
-    }
-
-    displayMyLibrary();
-}
