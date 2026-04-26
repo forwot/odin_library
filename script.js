@@ -76,10 +76,6 @@ class LibraryUI{
             this.#libContainer.appendChild(newRow);
         }
     }
-
-    addButton(){
-
-    }
 }
 
 const myLibrary = new Library();
