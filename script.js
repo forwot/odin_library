@@ -83,7 +83,7 @@ class LibraryUI{
 }
 
 const myLibrary = new Library();
-const myUI = new LibraryUI();
+const myUI = new LibraryUI(document.querySelector('.lib-container'));
 
 // ADD button 
 const inputTitle = document.querySelector('#title');
