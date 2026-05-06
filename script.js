@@ -87,17 +87,41 @@ const inputAuthor = document.querySelector('#author');
 const inputStat = document.querySelector('#stat');
 const addButton = document.querySelector('.add-button');
 
-addButton.addEventListener("click", () => {
+// FORM VALIDATION
+function validateAuthor(){
+    if (this.value.trim() === "" ) {
+        this.setCustomValidity("I am expecting an author!");
+      } else {
+        this.setCustomValidity("");
+      }
+};
+function validateTitle(){
+    if (this.value.trim() === "" ) {
+        this.setCustomValidity("I am expecting a title!");
+      } else {
+        this.setCustomValidity("");
+      }
+};
 
-    if( inputTitle.value.trim() !== "" && inputAuthor.value.trim() !== ""){
-        const book = new Book(inputTitle.value, inputAuthor.value, inputStat.value)
+const inputsContainer = document.querySelector('.inputs-container')
+
+inputAuthor.addEventListener('input', validateAuthor);
+inputTitle.addEventListener('input', validateTitle);
+
+inputsContainer.addEventListener("submit", (e) => { 
+    
+    if(!inputsContainer.checkValidity()){
+        e.preventDefault();
+        inputsContainer.reportValidity();
+        return;
+    }
+
+    e.preventDefault();
+    const book = new Book(inputTitle.value, inputAuthor.value, inputStat.value)
         myLibrary.addBook(book);
         myUI.displayBooks(myLibrary);
 
         inputAuthor.value = "";
         inputTitle.value = "";
-    }
-    else{
-        alert("Please fill in all fields.")
-    }
+        inputsContainer.reset();
 })

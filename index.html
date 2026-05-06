@@ -10,20 +10,20 @@
 <body>
     <div class="header"><h1>My Library</h1></div>
 
-    <div class="inputs-container">
+    <form class="inputs-container">
         <label for="title">Book</label>
-        <input type="text" id="title">
+        <input type="text" id="title" required>
 
         <label for="author">Author</label>
-        <input type="text" id="author">
+        <input type="text" id="author" required>
 
         <label for="stat">Status</label>
         <select name="stat" id="stat">
             <option value="Read">Read</option>
             <option value="Not read">Not read</option>
         </select>
-        <button class="add-button" type="button">Add</button>
-    </div>
+        <button class="add-button" type="submit">Add</button>
+    </form>
 
     <table class="lib-table">
         <thead>
